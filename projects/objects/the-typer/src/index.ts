@@ -1,6 +1,72 @@
-// Write your types here! ✨
+export type LocationBase = {
+	name: string;
+	proximity: number;
+	treasure?: string;
+};
 
-let current = {
+export type Clearing = LocationBase & {
+	type: "clearing";
+	through?: Location;
+};
+
+export type Path = LocationBase & {
+	type: "path";
+	through: Location;
+	shortcut?: Location;
+};
+
+export type TownBase = LocationBase & {
+	type: "town";
+	through?: Location;
+	around?: Location;
+};
+
+export type TownGoThrough = TownBase & {
+	through: Location;
+};
+
+export type TownGoAround = TownBase & {
+	around: Location;
+};
+
+export type TownGoThroughOrAround = TownBase & {
+	through: Location;
+	around: Location;
+};
+
+export type Town =
+	| TownBase
+	| TownGoThrough
+	| TownGoAround
+	| TownGoThroughOrAround;
+
+export type StreamBase = LocationBase & {
+	type: "stream";
+};
+
+export type StreamBeginArea = StreamBase & {
+	area: "begin";
+	downstream: Location;
+};
+
+export type StreamEndArea = StreamBase & {
+	area: "end";
+	upstream: Location;
+};
+
+export type StreamMiddleArea = StreamBase & {
+	area: "middle";
+	downstream: Location;
+	upstream: Location;
+};
+
+export type Stream = StreamBeginArea | StreamEndArea | StreamMiddleArea;
+
+export type Location = Clearing | Path | Town | Stream;
+
+export type PossibleLocation = Location | undefined;
+
+let current: PossibleLocation = {
 	name: "Woesong Bridge",
 	proximity: 100,
 	through: {
